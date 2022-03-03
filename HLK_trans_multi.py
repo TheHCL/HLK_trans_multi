@@ -2,7 +2,7 @@ import win32com.client as win32
 from tkinter import filedialog
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
-from openpyxl.styles import PatternFill
+from openpyxl.styles import PatternFill,Font
 
 import os
 
@@ -43,10 +43,12 @@ empty_fill = PatternFill(fill_type='solid',start_color='FFFFFF',end_color='FFFFF
 pass_fill = PatternFill(fill_type='solid',start_color='00BB00',end_color='00BB00')
 fail_fill = PatternFill(fill_type='solid',start_color='FF0000',end_color='FF0000')
 notrun_fill = PatternFill(fill_type='solid',start_color='ADADAD',end_color='ADADAD')
+cali = Font(name='Calibri')
 
 for x in range(12,max_rows):
 	d={}
 	ws.cell(row=x,column=1).fill = empty_fill
+	ws.cell(row=x,column=1).font = cali
 
 
 	for y in range(2,empty_col):
@@ -83,6 +85,9 @@ for x in range(12,max_rows):
 			
 		ws.cell(row=x,column=empty_col-1).value=filter_id
 		ws.cell(row=x,column=empty_col-1).fill = empty_fill
+		ws.cell(row=x,column=y).font = cali
+		ws.cell(row=x,column=empty_col-1).font = cali
+
 #==========filter_items__read===============
 
 wb.active=wb['Filter Summary']
@@ -143,6 +148,7 @@ ws=wb.active
 for x in range(1,len(all_info)+1):
 	for y in range(1,5):
 		ws.cell(row=x,column=y).value=all_info[x-1][y-1]
+		ws.cell(row=x,column=y).font = cali
 
 wb.remove(wb['Filter Summary'])
 
