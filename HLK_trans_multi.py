@@ -2,6 +2,7 @@ import win32com.client as win32
 from tkinter import filedialog
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
+from openpyxl.styles import PatternFill
 
 import os
 
@@ -38,10 +39,24 @@ max_rows=ws.max_row
 empty_col=ws.max_column
 
 #print(empty_col)
+empty_fill = PatternFill(fill_type='solid',start_color='FFFFFF',end_color='FFFFFF')
+pass_fill = PatternFill(fill_type='solid',start_color='00BB00',end_color='00BB00')
+fail_fill = PatternFill(fill_type='solid',start_color='FF0000',end_color='FF0000')
+notrun_fill = PatternFill(fill_type='solid',start_color='ADADAD',end_color='ADADAD')
 
 for x in range(12,max_rows):
 	d={}
+	ws.cell(row=x,column=1).fill = empty_fill
+
+
 	for y in range(2,empty_col):
+		
+		if ws.cell(row=x,column=y).value =="Passed":
+			ws.cell(row=x,column=y).fill = pass_fill
+		if ws.cell(row=x,column=y).value =="NotRun":
+			ws.cell(row=x,column=y).fill = notrun_fill
+		if ws.cell(row=x,column=y).value =="Failed":
+			ws.cell(row=x,column=y).fill = fail_fill
 		if ws.cell(row=x,column=y).comment is not None:
 			tmp=ws.cell(row=x,column=y).comment.text
 			tmp=tmp.split("\n")
@@ -67,7 +82,7 @@ for x in range(12,max_rows):
 			# print(filter_id)
 			
 		ws.cell(row=x,column=empty_col-1).value=filter_id
-
+		ws.cell(row=x,column=empty_col-1).fill = empty_fill
 #==========filter_items__read===============
 
 wb.active=wb['Filter Summary']
